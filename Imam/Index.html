@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imam Portfolio - Final Clean</title>
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&family=Outfit:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0EA5E9;
+            --accent: #6366F1;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #F1F5F9;
+            --text-sub: #94A3B8;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-dark);
+            height: 300vh;
+            font-family: 'Manrope', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 0; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .parallax-stage {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100vh;
+            overflow: hidden; pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .parallax-layer {
+            position: absolute; left: 0;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center;
+            will-change: transform, opacity;
+        }
+
+        #layer-text { top: 15%; z-index: 1; opacity: 0.05; }
+        #layer-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 25vw; margin: 0; font-weight: 900;
+            color: white; letter-spacing: -5px;
+        }
+
+        #layer-person { top: 5%; z-index: 10; align-items: center; height: 100vh; }
+        .miku-img {
+            height: 85vh; width: auto;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        }
+
+        #layer-hobbies { top: 0; z-index: 12; width: 100%; height: 100%; }
+        .hobby-icon {
+            position: absolute; width: 135px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+        .h1 { top: 20%; left: 18%; animation-delay: 0s; }
+        .h2 { top: 20%; right: 18%; animation-delay: 1s; }
+        .h3 { bottom: 25%; left: 22%; animation-delay: 2s; }
+        .h4 { bottom: 25%; right: 22%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        #layer-fg { z-index: 20; bottom: 15%; align-items: flex-end; }
+        .name-badge {
+            text-align: center;
+            background: rgba(30, 41, 59, 0.95);
+            padding: 25px 70px;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .name-badge h2 { margin: 0; font-weight: 800; font-size: 2.5rem; color: white; font-family: 'Outfit', sans-serif; letter-spacing: -1px; }
+        .name-badge span { font-size: 0.8rem; font-weight: 600; color: var(--primary); letter-spacing: 3px; display:block; margin-bottom: 5px; text-transform: uppercase; }
+
+        .content-block {
+            position: relative; top: 150vh;
+            background: var(--bg-dark);
+            padding: 4rem 2rem 12rem 2rem;
+            min-height: 100vh; z-index: 50; text-align: center;
+            box-shadow: 0 -50px 50px rgba(0,0,0,0.5);
+            border-top: 1px solid #334155;
+        }
+
+        .profile-container {
+            display: flex; gap: 30px;
+            max-width: 1000px; margin: 0 auto 80px auto;
+            text-align: left;
+        }
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 16px; padding: 40px;
+            flex: 1; border: 1px solid #334155;
+        }
+        .profile-header {
+            font-family: 'Outfit', sans-serif; color: white;
+            font-size: 1.8rem; font-weight: 800; margin-bottom: 25px;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .bio-text { color: var(--text-sub); line-height: 1.8; margin-bottom: 20px; font-size: 1.05rem; }
+
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table td { padding: 15px 0; border-bottom: 1px solid #334155; vertical-align: top; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-label { font-weight: 600; color: var(--text-sub); width: 140px; font-size: 0.95rem; }
+        .data-value { color: white; font-weight: 500; font-size: 1rem; }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px; max-width: 900px;
+            margin: 50px auto 100px auto;
+        }
+        .card {
+            background: var(--card-bg);
+            height: 260px; border-radius: 16px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            transition: 0.3s; border: 1px solid #334155;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+            background: var(--primary); transition: 0.3s;
+        }
+        .card:nth-child(2):before { background: var(--accent); }
+        .card:nth-child(3):before { background: #F43F5E; }
+        .card:nth-child(4):before { background: #10B981; }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: #253248;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card-icon { font-size: 3.5rem; margin-bottom: 20px; color: var(--text-sub); transition: 0.3s; }
+        .card:hover .card-icon { color: white; transform: scale(1.1); }
+        .card-title { font-size: 1.5rem; font-weight: 700; color: white; font-family: 'Outfit'; margin-bottom: 5px; }
+        .card-desc { font-size: 0.95rem; color: var(--text-sub); }
+
+        .cta-container { max-width: 600px; margin: 0 auto; text-align: center; }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white; font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem; font-weight: 800;
+            padding: 25px 60px; border-radius: 12px;
+            text-decoration: none; transition: 0.3s;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        }
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 50px rgba(14, 165, 233, 0.6);
+        }
+        .cta-subtext { display: block; margin-top: 15px; color: var(--text-sub); font-size: 1rem; }
+
+        .fixed-footer {
+            position: fixed; bottom: 0; left: 0;
+            width: 100%; height: 80px;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid #334155; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 40px; box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+        .jacket {
+            width: 50px; height: 50px; border-radius: 12px;
+            overflow: hidden; background: var(--card-bg);
+        }
+        .jacket img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-info { display: flex; flex-direction: column; margin-left: 20px; }
+        .profile-title { font-weight: 800; color: white; font-size: 1rem; font-family: 'Outfit'; }
+        .profile-subtitle { font-size: 0.85rem; color: var(--primary); font-weight: 600; }
+
+        .social-icons { display: flex; gap: 30px; align-items: center; }
+        .social-link { font-size: 1.6rem; color: var(--text-sub); transition: 0.3s; text-decoration: none; }
+        .social-link:hover { color: white; transform: translateY(-3px); }
+        
+        .social-link i.fa-whatsapp:hover { color: #25D366; }
+        .social-link i.fa-instagram:hover { color: #E1306C; }
+
+        @media (max-width: 1024px) {
+            .profile-container { flex-direction: column; }
+            .project-grid { grid-template-columns: 1fr; max-width: 500px; }
+        }
+        @media (max-width: 768px) {
+            .project-grid { padding: 0 20px; }
+            .profile-container { margin-bottom: 50px; padding: 0 10px; }
+            #layer-text h1 { font-size: 35vw; opacity: 0.05; }
+            .miku-img { height: 60vh; }
+            .hobby-icon { width: 90px; }
+            .h1 { top: 15%; left: 5%; } .h2 { top: 15%; right: 5%; }
+            .h3 { bottom: 40%; left: 5%; } .h4 { bottom: 40%; right: 5%; }
+            .fixed-footer { padding: 0 20px; height: 70px; }
+            .profile-title { display: none; }
+            .social-icons { gap: 20px; }
+            .social-link, .cta-button { font-size: 1.4rem; }
+            .cta-button { padding: 20px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parallax-stage">
+        <div class="parallax-layer" id="layer-text"><h1>IMAM</h1></div>
+        <div class="parallax-layer" id="layer-person">
+            <img src="imam.png" alt="Main Character" class="miku-img">
+        </div>
+        <div class="parallax-layer" id="layer-hobbies">
+            <img src="https://img.icons8.com/color/96/code.png" class="hobby-icon h1">
+            <img src="https://img.icons8.com/color/96/laptop.png" class="hobby-icon h2">
+            <img src="https://img.icons8.com/color/96/graduation-cap.png" class="hobby-icon h3">
+            <img src="https://img.icons8.com/color/96/light-on.png" class="hobby-icon h4">
+        </div>
+        <div class="parallax-layer" id="layer-fg">
+            <div class="name-badge">
+                <span>Mahasiswa</span>
+                <h2>SYEKH IMAM</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h2 style="color: var(--primary); font-family: 'Outfit'; font-size: 3rem; margin-bottom: 10px;">Personal Profile</h2>
+        <p style="margin-bottom: 60px; color: var(--text-sub); font-size: 1.1rem;">An overview of my journey and identity.</p>
+
+        <div class="profile-container">
+            <div class="profile-card">
+                <div class="profile-header"><i class="fas fa-quote-left" style="color:var(--primary)"></i> About Me</div>
+                <p class="bio-text">Hello! Saya <b>Syekh Imam Sayyid A.Z</b>. Mahasiswa informatika yang memiliki passion kuat dalam pengembangan perangkat lunak dan teknologi modern.</p>
+                <p class="bio-text">Saya menikmati proses memecahkan masalah melalui kode dan aktif berkontribusi dalam lingkungan akademik sebagai Asisten Dosen.</p>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-header"><i class="fas fa-database" style="color:var(--accent)"></i> Key Information</div>
+                <table class="data-table">
+                    <tr><td class="data-label">Full Name</td><td class="data-value">Syekh Imam Sayyid A.Z</td></tr>
+                    <tr><td class="data-label">Current Role</td><td class="data-value">Student & Lab Assistant</td></tr>
+                    <tr><td class="data-label">Major</td><td class="data-value">Informatics Engineering Edu</td></tr>
+                    <tr><td class="data-label">NIM</td><td class="data-value">230209501047</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <h2 style="color: white; font-family: 'Outfit'; font-size: 3rem; margin-top: 80px;">Featured Projects</h2>
+        <p style="margin-bottom: 50px; color: var(--text-sub); font-size: 1.1rem;">Selected works and contributions.</p>
+       
+        <div class="project-grid">
+            <div class="card">
+                <i class="fas fa-chalkboard-teacher card-icon"></i>
+                <span class="card-title">Asisten Dosen</span>
+                <span class="card-desc">Inovasi Teknologi 2025</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-calendar-alt card-icon"></i>
+                <span class="card-title">Panitia ACO 2024</span>
+                <span class="card-desc"> Division</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-code-branch card-icon"></i>
+                <span class="card-title">SIAkad System</span>
+                <span class="card-desc">Web Development Project</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-shopping-cart card-icon"></i>
+                <span class="card-title">Furshie Store</span>
+                <span class="card-desc">E-Commerce Platform</span>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <a href="mailto:syekhimam313@gmail.com" class="cta-button">
+                START A COLLABORATION <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </a>
+            <span class="cta-subtext">Have a project in mind? Let's create something amazing together.</span>
+        </div>
+    </div>
+
+    <div class="fixed-footer">
+        <div style="display:flex; align-items:center;">
+            <div class="jacket">
+                <img src="aab.jpg" alt="Profile">
+            </div>
+            <div class="profile-info">
+                <span class="profile-title">Let's Collaborate</span>
+                <span class="profile-subtitle">@syekhimam</span>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="mailto:syekhimam313@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+            
+            <a href="https://www.instagram.com/syekh_imam455?igsh=MTBlNzE4b3lnbDVvcQ==" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+            
+            <a href="https://wa.me/6281243241465" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </div>
+
+    <script>
+        const elements = {
+            bgText: document.getElementById('layer-text'),
+            person: document.getElementById('layer-person'),
+            badge: document.getElementById('layer-fg'),
+            icons: [
+                document.getElementsByClassName('h1')[0],
+                document.getElementsByClassName('h2')[0],
+                document.getElementsByClassName('h3')[0],
+                document.getElementsByClassName('h4')[0]
+            ]
+        };
+
+        let currentScroll = 0;
+        let targetScroll = 0;
+        const ease = 0.08;
+
+        window.addEventListener('scroll', () => targetScroll = window.scrollY);
+
+        function animate() {
+            currentScroll += (targetScroll - currentScroll) * ease;
+            const s = currentScroll;
+            const opacityVal = Math.max(0, 1 - s / 800);
+           
+            elements.bgText.style.transform = `translateY(${s * 0.1}px) scale(${1 + s * 0.001})`;
+            
+            elements.person.style.transform = `translateY(${s * 0.2}px) scale(${1 + s * 0.0005})`;
+            elements.person.style.opacity = opacityVal;
+
+            elements.badge.style.transform = `translateY(${-s * 0.5}px)`;
+            elements.badge.style.opacity = Math.max(0, 1 - s / 300);
+
+            elements.icons[0].style.transform = `translate(-${s * 0.5}px, -${s * 0.5}px) scale(${1 + s * 0.002})`;
+            elements.icons[0].style.opacity = opacityVal;
+            
+            elements.icons[1].style.transform = `translate(${s * 0.5}px, -${s * 0.3}px) scale(${1 + s * 0.002})`;
+            elements.icons[1].style.opacity = opacityVal;
+            
+            elements.icons[2].style.transform = `translate(-${s * 0.3}px, ${s * 0.2}px) scale(${1 + s * 0.002})`;
+            elements.icons[2].style.opacity = opacityVal;
+            
+            elements.icons[3].style.transform = `translate(${s * 0.6}px, ${s * 0.3}px) scale(${1 + s * 0.002})`;
+            elements.icons[3].style.opacity = opacityVal;
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
